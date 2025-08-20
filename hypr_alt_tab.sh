@@ -72,7 +72,7 @@ for idx in "${order[@]}"; do
   wire+=("$disp$tag$DELIM${winids[idx]}")       # carries the id
 done
 
-choice=$(printf '%s\n' "${pretty[1]}")
+choice=$(printf '%s\n' "${pretty[1]:-${pretty[0]}}")
 [[ -z $choice ]] && exit 0
 
 sel_idx=-1
