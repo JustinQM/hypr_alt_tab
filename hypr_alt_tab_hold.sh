@@ -62,6 +62,7 @@ wire=()
 
 for idx in "${order[@]}"; do
   disp="${titles[idx]:-${windows[idx]}}"
+  disp="${disp:-${winids[idx]}}"
 
   n=$(( ${seen["$disp"]:-0} + 1 )); seen["$disp"]=$n
   tag=""
