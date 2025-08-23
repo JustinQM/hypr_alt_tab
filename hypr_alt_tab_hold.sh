@@ -93,31 +93,31 @@ wire=()
 icons=()
 
 for idx in "${order[@]}"; do
-  disp="${titles[idx]:-${windows[idx]}}"
-  disp="${disp:-${winids[idx]}}"
+    disp="${titles[idx]:-${windows[idx]}}"
+    disp="${disp:-${winids[idx]}}"
 
-  n=$(( ${seen["$disp"]:-0} + 1 )); seen["$disp"]=$n
-  tag=""
-  for ((k=1; k<n; k++)); do tag+="$ZWS"; done
+    n=$(( ${seen["$disp"]:-0} + 1 )); seen["$disp"]=$n
+    tag=""
+    for ((k=1; k<n; k++)); do tag+="$ZWS"; done
 
-  #get icons
-  c="${class[idx]}"
-  c="${c,,}" #make lowercase
+    #get icons
+    c="${class[idx]}"
+    c="${c,,}" #make lowercase
 
-  exe=$(readlink -f "/proc/$pids[idx]}/exe" 2>/dev/null || true)
-  bin="${exe##*/}"
+    exe=$(readlink -f "/proc/$pids[idx]}/exe" 2>/dev/null || true)
+    bin="${exe##*/}"
 
-  icon="$c"
-  [[ -z $icon ]] && icon="$bin"
+    icon="$c"
+    [[ -z $icon ]] && icon="$bin"
 
-  d_icon=$(desktop_icon "$c" "$bin")
-  [[ -n $d_icon ]] && icon="$d_icon"
+    d_icon=$(desktop_icon "$c" "$bin")
+    [[ -n $d_icon ]] && icon="$d_icon"
 
-  icons+=("$icon")
-  #end icons code
+    icons+=("$icon")
+    #end icons code
 
-  pretty+=("$disp$tag")                         # visible to fuzzel
-  wire+=("$disp$tag$DELIM${winids[idx]}")       # carries the id
+    pretty+=("$disp$tag")                         # visible to fuzzel
+    wire+=("$disp$tag$DELIM${winids[idx]}")       # carries the id
 done
 
 choice=$({
