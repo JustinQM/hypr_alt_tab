@@ -14,12 +14,14 @@ clients=$(hyprctl clients)
 
 desktop_icon()
 {
-    local class="$1" bin="$2" f icon
+    local class="$1" bin="$2" title="$3" f icon
     for dir in "$HOME/.local/share/applications" /usr/share/applications; do
         #1
         [[ -f "$dir/${class}.desktop" ]] && f=$dir/${class}.desktop
         #2
         [[ -z $f ]] && f=$(grep -FIl "StartupWMClass=$class" "$dir"/*.desktop 2>/dev/null | head -n1)
+        #3
+        [[ -f "$dir/${title}.desktop" ]] && f=$dir/${title}.desktop
 
         if [[ -n $f ]]; then
             icon=$(awk -F= '/^Icon=/ {print $2; exit}' "$f")
@@ -103,6 +105,7 @@ for idx in "${order[@]}"; do
     #get icons
     c="${class[idx]}"
     c="${c,,}" #make lowercase
+    t="${titles[idx]}"
 
     exe=$(readlink -f "/proc/$pids[idx]}/exe" 2>/dev/null || true)
     bin="${exe##*/}"
@@ -110,8 +113,8 @@ for idx in "${order[@]}"; do
     icon="$c"
     [[ -z $icon ]] && icon="$bin"
 
-    d_icon=$(desktop_icon "$c" "$bin")
-    [[ -n $d_icon ]] && icon="$d_icon"
+    d_icon=$(desktop_icon "$c" "$bin" "$t")
+    [[ -n $d_icon ]] && icon="$d_icon" 
 
     icons+=("$icon")
     #end icons code
