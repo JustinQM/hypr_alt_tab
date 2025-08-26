@@ -2,7 +2,7 @@
 
 #---------CHANGE THIS FOR YOUR DMENU CLIENT----------------
 
-dmenu=(fuzzel --dmenu)
+dmenu=(fuzzel --dmenu --auto-select --match-mode=exact)
 
 #----------------------------------------------------------
 
