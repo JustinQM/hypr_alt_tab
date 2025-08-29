@@ -33,6 +33,7 @@ desktop_icon()
 
 windows_raw=$(echo "$clients" | grep Window)
 titles_raw=$(echo "$clients" | grep initialTitle)
+dynamic_titles_raw=$(echo "$clients" | grep title)
 workspace_raw=$(echo "$clients" | grep workspace)
 focus_history_raw=$(echo "$clients" | grep focusHistoryID)
 class_raw=$(echo "$clients" | grep -E '^\s*class:\s')
@@ -55,6 +56,12 @@ while IFS= read -r line; do
     s=${line#*: }
     titles+=("$s")
 done <<< "$titles_raw"
+
+dyanmic_titles=()
+while IFS= read -r line; do
+    s=${line#*: }
+    dynamic_titles+=("$s")
+done <<< "$dynamic_titles_raw"
 
 workspaces=()
 while IFS= read -r line; do
@@ -95,7 +102,8 @@ wire=()
 icons=()
 
 for idx in "${order[@]}"; do
-    disp="${titles[idx]:-${windows[idx]}}"
+    disp="${dynamic_titles[idx]:-${titles[idx]}}"
+    disp="${disp:-${windows[idx]}}"
     disp="${disp:-${winids[idx]}}"
 
     n=$(( ${seen["$disp"]:-0} + 1 )); seen["$disp"]=$n
